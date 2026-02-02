@@ -4,8 +4,9 @@ description: |
   Execute API test DSL and generate REST Assured test code.
   Triggers on: execute test dsl, run api tests, test executor
   Part of the API Testing skill category.
+  Supports Docker mode: docker test, 容器测试
 allowed-tools: "Read, Write, Edit, Bash(mvn:*, source:*, env:*), Grep, Glob"
-version: 5.0.0
+version: 5.1.0
 license: MIT
 author: "Nova Dev Team"
 ---
@@ -243,9 +244,40 @@ public void test_callback_success() throws Exception {
 
 ## 执行测试
 
+### Docker 模式（默认）
+
+默认使用 Docker 容器执行测试，隔离环境，不占用本地端口：
+
 ```bash
-mvn test -Dtest={ClassName}ApiTest 2>&1 | tail -30
+cd testing/docker && bash start.sh
 ```
+
+### 本地模式
+
+当用户明确说"本地跑"、"不用 docker"时使用（需本地已启动应用）：
+
+```bash
+cd testing/nova-dev-tests && mvn test -Dtest={ClassName}ApiTest 2>&1 | tail -50
+```
+
+**流程：**
+1. `mvn package` 构建应用 JAR
+2. `docker compose up -d nova-app` 启动应用容器（8080 端口）
+3. 等待健康检查通过
+4. `docker compose run --rm nova-api-test` 在容器中执行测试
+5. 自动清理容器
+
+**Docker 相关文件：**
+- `testing/docker/docker-compose.yml` — 服务定义
+- `testing/docker/Dockerfile.test` — 测试容器镜像
+- `testing/docker/start.sh` / `stop.sh` — 启动/停止脚本
+
+**Docker 模式排查：**
+| 问题 | 排查 |
+|------|------|
+| 健康检查失败 | `docker logs docker-nova-app-1` |
+| 测试连接失败 | 检查 `TEST_BASE_URL` 和网络 |
+| 构建失败 | 检查 JAR 是否生成 |
 
 ---
 

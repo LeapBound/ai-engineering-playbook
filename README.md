@@ -94,6 +94,7 @@
 2. `api-test-executor`：DSL → 测试代码 → 执行
    - 生成标准化的 REST Assured 测试
    - 自动处理认证、数据准备、断言
+   - 支持 Docker 容器化测试（默认）和本地模式
    - 执行并报告结果
 
 3. `test-fixture-builder`：管理测试数据

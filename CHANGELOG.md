@@ -11,6 +11,17 @@
 - 自动化 Review Checklist + 关键决策标注，降低审查成本
 - 变更摘要 + Rollback 计划自动生成，提升上线可追溯性
 
+## [0.2.0] - 2026-02-03
+### Added
+- Docker 模式支持：api-test-executor 现在支持容器化测试执行
+  - 默认使用 Docker 容器执行测试，隔离环境，不占用本地端口
+  - 提供本地模式作为备选方案
+  - 包含完整的 Docker 配置文件和启动脚本
+  - 新增 Docker 模式排查指南
+
+### Changed
+- api-test-executor 版本升级：5.0.0 → 5.1.0
+
 ## [0.1.0] - 2026-02-03
 ### Added
 - 项目 README：技术负责人的 AI 编程实践指南
