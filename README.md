@@ -1,76 +1,25 @@
-# First Commit AI - 技术负责人的 AI 编程实践指南
+# AI Engineering Playbook
 
-> 不是教你如何用 AI，而是如何**约束 AI**，让它在你的规则下工作。
+> 面向技术负责人的 AI 工程治理方法论
 
-## 1. 开场（Why）
+## 问题定义
 
-你的团队开始用 AI 写代码了，3 个月后你发现：
+AI 引入后，代码一致性开始下降，团队难以维持统一的工程标准。  
+Review 成本上升，因为需要识别生成代码背后的隐含假设与边界。  
+技术债风险加剧，局部最优的实现堆叠成系统性失控。  
+当约束缺失时，架构、质量与维护性都会被动下滑。
 
-- ❌ 代码能跑，但架构越来越混乱
-- ❌ 每个人用 AI 的方式不同，代码风格千奇百怪
-- ❌ 技术债务快速积累，重构成本指数增长
-- ❌ Code Review 反而更费时，因为要理解 AI 的逻辑
+## 立场声明
 
-**问题根源**：AI 是个能干活但缺乏约束的初级工程师。
+本项目不是教写代码，而是防止工程失控。  
+技术负责人需要把注意力放在规则、边界与审计机制上。  
+核心目标是让 AI 在可验证的约束中执行。
 
-**本项目的答案**：建立结构化的工作流和约束机制，让 AI 在规则下工作。
+## 核心方法
 
-这不是完美方案，而是一份面向技术负责人的工程化探索。
-
-## 2. 技术负责人的真实痛点
-
-### 1. 架构失控
-- AI 不理解系统全局，容易产生碎片化解决方案
-- 缺乏架构约束，每个功能都是“能跑就行”
-- 技术债务快速积累，3 个月后代码库变成屎山
-
-### 2. 质量难保证
-- AI 生成的代码看起来能跑，但边界情况没考虑
-- 缺少测试，重构时心里没底
-- 出问题是 AI 的锅还是需求的锅？
-
-### 3. 团队协作混乱
-- 每个人用 AI 的方式不同，代码风格千奇百怪
-- Code Review 成本反而更高，因为要理解 AI 的逻辑
-- 新人用 AI 写的代码，老人看不懂
-
-### 4. 维护性问题
-- AI 生成的代码缺少注释和文档
-- 过度设计或过度简化
-- 业务逻辑散落各处，难以追溯
-
-## 3. 核心价值与方法论（How）
-
-### 本项目的价值
-不是教你如何用 AI，而是如何**约束 AI**，让它在你的规则下工作。
-
-### 核心理念
-- AI 是个初级工程师，写代码很快，但需要清晰的指令和检查机制
-- 技术负责人要做的：定义规则、设计工作流、建立检查点
-- 结构化 > 自然语言：用 DSL、Schema、约定文档来约束 AI 的输出
-
-### 核心原则
-1. **结构化约束 > 自然语言指令**
-   - 为什么：自然语言有歧义，AI 会按它的理解执行
-   - 怎么做：用 DSL、Schema、约定文档来定义清晰规则
-   - 案例：测试 DSL 定义“测什么”，而非让 AI 猜
-
-2. **验证实际行为 > 信任 AI 推测**
-   - 为什么：AI 会套用常见模式，但你的系统有特殊逻辑
-   - 怎么做：探测真实 API 响应、执行测试、Review 代码
-   - 案例：curl 探测 API 行为，而非让 AI 猜错误码
-
-3. **人定规则，AI 执行**
-   - 为什么：架构、质量标准、业务规则必须由人控制
-   - 怎么做：技术负责人定义工作流的检查点
-   - 案例：DSL 规则、测试策略由人定义，生成代码由 AI 完成
-
-### 技术负责人的职责重新定义
-- ✅ 定义架构约束和编码规范
-- ✅ 设计 AI 编程工作流和检查点
-- ✅ Review 关键决策和风险代码
-- ❌ 不是写所有代码
-- ❌ 不是当人肉 linter
+- 输出必须结构化（结构化测试模板/Schema/Checklist）
+- 规则优先，自然语言提示被约束
+- 人只审规则，AI 执行
 
 ## 4. 当前实践：第一个实践——结构化 API 测试工作流（What - Now）
 
@@ -82,61 +31,52 @@
 但这只是第一步，完整的 AI 编程工作流还包括：
 需求澄清 → 架构设计 → 代码实现 → 测试验证 → 代码审查
 
-### 解决方案：三阶段测试生成工作流
+### 解决方案：双技能测试生成工作流
 
-**现有的 3 个 skills（结构化约束的具体应用）：**
+**当前实现方式（基于 `api-test` skill）：**
+1. 分析代码路径（Controller/Service）
+2. 直接生成 REST Assured 测试类 + SQL fixture
+3. 执行测试
+4. 报告结果
 
-1. `api-test-dsl-generator`：分析代码 → 生成结构化测试 DSL
-   - 用 codex 分析 Controller/Service 的业务分支
-   - curl 探测真实 API 响应（验证实际行为）
-   - 生成 JSON 格式的测试 DSL（规则由人定义）
+**现有的 2 个 skills（结构化约束的具体应用）：**
 
-2. `api-test-executor`：DSL → 测试代码 → 执行
-   - 生成标准化的 REST Assured 测试
-   - 自动处理认证、数据准备、断言
+1. `api-test`：生成并执行 REST Assured + JUnit 5 API 测试
+   - 生成测试类、fixtures 和断言
+   - 自动处理认证、数据准备、执行与结果报告
    - 支持 Docker 容器化测试（默认）和本地模式
-   - 执行并报告结果
+   - 基于真实 API 响应进行探测验证
 
-3. `test-fixture-builder`：管理测试数据
-   - 创建和维护 SQL fixture
-   - 支持跨库数据关联
+2. `test-fixture`：管理测试数据
+   - 创建或更新 SQL fixture
+   - 支持单库、跨库数据关联与验证码登录场景
 
 **为什么这样设计：**
-- DSL 可审查：团队能 review “测什么”
-- DSL 可复用：同一份 DSL 可生成不同语言的测试
+- 模板可审查：团队能 review 测试模板和生成规则
+- Fixture 可复用：同一份 SQL fixture 支持多个测试场景
 - 探测优先：基于真实 API 行为而非代码推测
 
 ### 快速开始
 
 ```bash
 # 1. 配置项目约定（模板：project-conventions.yaml）
-# 2. 生成测试 DSL
-/api-test-dsl-generator /api/users/login POST
-# 3. 执行测试
-/api-test-executor testing/tests/dsl/user/login-POST.json
+# 2. 创建测试数据 fixture
+/test-fixture 用户登录场景
+# 3. 生成并执行 API 测试
+/api-test POST /api/users/login
 ```
 
 ### 一个端到端的小例子（登录 API）
 
 **假设场景**：`POST /api/users/login`
 
-**1) DSL（JSON）**
+**1) Fixture SQL**
 
-```json
-{
-  "name": "user login",
-  "request": {
-    "method": "POST",
-    "path": "/api/users/login",
-    "headers": {"Content-Type": "application/json"},
-    "body": {"email": "user@example.com", "password": "correct_password"}
-  },
-  "assertions": [
-    {"status": 200},
-    {"jsonPath": "$.token", "exists": true},
-    {"jsonPath": "$.user.id", "type": "number"}
-  ]
-}
+```sql
+-- 幂等：先删后插
+DELETE FROM users WHERE id = 900001;
+INSERT INTO users (id, email, password_hash, status)
+VALUES (900001, 'test@example.com', 'hashed_password', 'ACTIVE');
 ```
 
 **2) 生成的测试代码（REST Assured）**
@@ -161,7 +101,7 @@ given()
 [PASS] user login - user.id is number
 ```
 
-> 注意：这里的断言来自 DSL，而不是 AI “猜测”出来的逻辑。🧪
+> 注意：这里的断言来自结构化测试模板，而不是 AI “猜测”出来的逻辑。
 
 ### 技术栈
 - 当前：Java/Spring Boot + REST Assured
@@ -185,7 +125,7 @@ given()
 
 #### 4. 测试验证 [已实现] ✅
 **痛点**：AI 生成的代码缺少测试，边界情况没覆盖
-**方案**：结构化测试 DSL 工作流（当前 3 个 skills）
+**方案**：结构化测试工作流（当前 2 个 skills）
 
 #### 5. 代码审查 [规划中]
 **痛点**：Review 成本高，因为要理解 AI 的逻辑
