@@ -2,20 +2,20 @@
 
 > 面向技术负责人的 AI 工程治理方法论
 
-## 问题定义
+## 1. 问题定义
 
 AI 引入后，代码一致性开始下降，团队难以维持统一的工程标准。  
 Review 成本上升，因为需要识别生成代码背后的隐含假设与边界。  
 技术债风险加剧，局部最优的实现堆叠成系统性失控。  
 当约束缺失时，架构、质量与维护性都会被动下滑。
 
-## 立场声明
+## 2. 立场声明
 
 本项目不是教写代码，而是防止工程失控。  
 技术负责人需要把注意力放在规则、边界与审计机制上。  
 核心目标是让 AI 在可验证的约束中执行。
 
-## 核心方法
+## 3. 核心方法
 
 - 输出必须结构化（结构化测试模板/Schema/Checklist）
 - 规则优先，自然语言提示被约束
@@ -151,7 +151,42 @@ given()
 **贡献指南**：
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 
-## 7. 相关资源
+## 7. POC 实验（Proof of Concept）
+
+### Claude Agent SDK 集成研究
+
+**目录**：`poc/claude-agent-sdk/`
+
+**研究目标**：探索 Claude Agent SDK 作为 AI 编程工作流执行引擎的可行性
+
+**核心发现**：
+- ✅ Claude Agent SDK 可作为轻量级 AI 助手（如 nanobot）的执行引擎
+- ✅ 自定义 Agents 功能支持任务路由和角色专业化
+- ✅ 完整的工具生态（Read/Write/Bash/Edit + MCP 协议）
+- ✅ 成本可控（Haiku $0.11, Sonnet $0.20-0.44 per query）
+
+**测试覆盖**：
+1. 基础查询和工具使用
+2. 多轮交互式对话
+3. MCP 工具集成（自定义工具 + 内置工具）
+4. 自定义 Agents（code-reviewer, tester, refactorer 等）
+
+**生成代码质量**：
+- fibonacci.py：3 种实现方式，完整类型提示和文档
+- test_fibonacci.py：60+ 测试用例，覆盖边界条件和性能测试
+
+**详细文档**：
+- [POC_SUMMARY.md](poc/claude-agent-sdk/POC_SUMMARY.md) - 整体测试总结
+- [AGENTS_SUMMARY.md](poc/claude-agent-sdk/AGENTS_SUMMARY.md) - Agents 功能深度分析
+
+**应用场景**：
+- 作为 nanobot 等轻量级 AI 助手的调度层
+- 多渠道接入（Telegram/Feishu/WhatsApp）的统一执行引擎
+- 与 Codex 等 MCP servers 集成进行代码实现
+
+## 8. 相关资源
 
 - [Claude Code 官方文档](https://claude.com/claude-code)
+- [Claude Agent SDK 文档](https://docs.anthropic.com/en/api/agent-sdk/overview)
 - [MCP 协议介绍](https://modelcontextprotocol.io)
+- [nanobot 项目](https://github.com/HKUDS/nanobot)
