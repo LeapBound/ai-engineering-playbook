@@ -16,3 +16,6 @@ AI 工程引入后，代码生成速度提升，但工程决策、规则一致�
 - 适用对象：Tech Lead / 架构师 / CTO
 - 扩展参考：
   - [AI 导致工程事故的案例](04-failure-cases.md)
+
+## 实践成果
+- [实践成果展示：Lucy Orchestrator](05-practice-showcase-lucy-orchestrator.md)

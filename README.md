@@ -184,6 +184,19 @@ given()
 - 多渠道接入（Telegram/Feishu/WhatsApp）的统一执行引擎
 - 与 Codex 等 MCP servers 集成进行代码实现
 
+### 实践项目成果：Lucy Orchestrator（落地样例）
+
+我们在独立实践项目 `~/git_home/lucy-code` 中，将本方法论落实为可运行系统：
+
+- 显式状态机驱动任务闭环：`NEW -> CLARIFYING -> WAIT_APPROVAL -> RUNNING -> TESTING -> DONE/FAILED`
+- 飞书接入 + OpenCode 执行 + 任务级 worktree 隔离
+- 结构化日志、任务事件与测试报告沉淀，支持审计与复盘
+
+这说明本项目的方法论不仅可写成文档，也可映射到真实工程实现。
+
+详细展示见：
+- [实践成果展示：Lucy Orchestrator](docs/05-practice-showcase-lucy-orchestrator.md)
+
 ## 8. 相关资源
 
 - [Claude Code 官方文档](https://claude.com/claude-code)

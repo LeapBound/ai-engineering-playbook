@@ -10,6 +10,8 @@ nav:
       - Review 反转: 03-review-inversion.md
   - 案例:
       - 失败案例: 04-failure-cases.md
+  - 实践成果:
+      - Lucy Orchestrator: 05-practice-showcase-lucy-orchestrator.md
 
 theme:
   name: material
